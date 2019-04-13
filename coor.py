@@ -20,20 +20,14 @@ def parse_dms(dms):
     """.format(lat=lat,lng=lng)
     return witsml
 
-#result = parse_dms("36°57'9\" N 110°4'21\" W")
-
-#print(result)
 
 with open('coordinate.csv', newline='') as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
-        #print(row['Well'])
-        #print(parse_dms((str(row['Latitude'])+" " +str(row['Longitude']))))
-        #print(re.split('[^\d+\.\d\w]+', str(row['Latitude'])))
         row['XML']=parse_dms((row['Latitude']+" " +row['Longitude']))
         print(row['XML'])
         with open('results.csv','a+') as result:
             thewriter=csv.writer(result)
             thewriter.writerow([row['Well']])
             thewriter.writerow([row['XML']])
-            #thewriter.writerow([str(row['Well']),str(row['Latitude']),str(row['Longitude']),str(row['XML'])])
+
