@@ -13,22 +13,23 @@ def parse_dms(dms):
     lat = dms2dd(parts[0], parts[1], parts[2], parts[3])
     lng = dms2dd(parts[4], parts[5], parts[6], parts[7])
     witsml="""    
-    <wellLocation uid=offset>
+    <wellLocation uid="offset">
       <latitude uom="dega">{lat}</latitude>
       <longitude uom="dega">{lng}</longitude>
     </wellLocation>
     """.format(lat=lat,lng=lng)
     return witsml
 
-with open('results.csv',"w") as createfile:
+with open('results.txt','w') as createfile:
     pass
 with open('coordinate.csv', newline='') as csvfile:
     reader = csv.DictReader(csvfile)
     for row in reader:
         row['XML']=parse_dms((row['Latitude']+" " +row['Longitude']))
         print(row['XML'])
-        with open('results.csv','a+') as result:
-            thewriter=csv.writer(result)
-            thewriter.writerow([row['Well']])
-            thewriter.writerow([row['XML']])
-
+        with open('results.txt','a+') as result:
+            thewriter=csv.DictWriter(result,["well","xml"], delimiter='\t', quoting=csv.QUOTE_NONE,escapechar='\r')
+            #thewriter.writerow({"well":row['Well']})
+            #thewriter.writerow({"xml":row["XML"]})
+            thewriter.writerow({"well":row["Well"],"xml":row["XML"]})
+            
